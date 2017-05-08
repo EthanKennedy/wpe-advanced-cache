@@ -78,7 +78,6 @@ class WPEAC_Admin {
 	function cache_menu_settings_page() {
 		$options = WPEAC_Core::get();
 		$smarter_cache_enabled = $options['smarter_cache_enabled'];
-	//	var_dump($options);
 		?>
 		<div class="wrap">
 			<h2>Cache Options</h2>
@@ -342,15 +341,18 @@ class WPEAC_Admin {
 	 * @return int $input Cache control option
 	 */
 	function validate_cache_control_settings( $options ) {
-
-		//$current = WPEAC_Core::get();
-		// extract( $options );
-//echo '<pre>'; var_dump( $options ); die();
-		// $current['smarter_cache_enabled'] = 0;
-		// return $current;
-		//return ( in_array( (int) $options, self::VALID_CACHE_CONTROL_OPTIONS ) ? $options : 3600 );
+		$current = WPEAC_Core::get();
+		if ( ! is_array( $options ) ) {
+			return $current;
+		}
+		// $options = filter_var_array( $options, array(
+		// 	'sanitized_post_types'         => FILTER_FORCE_ARRAY,
+		// 	'sanitized_builtin_post_types' => FILTER_FORCE_ARRAY,
+		// 	'smarter_cache_enabled'        => FILTER_VALIDATE_INT,
+		// 	'last_modified_enabled'        => FILTER_VALIDATE_INT,
+		// 	'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
+		// ) );
 		return $options;
-		//@TODO Add the actual functionality of the update to the menu here?
 	}
 	/**
 	 * Purges cache based on post number
