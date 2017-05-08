@@ -345,13 +345,20 @@ class WPEAC_Admin {
 		if ( ! is_array( $options ) ) {
 			return $current;
 		}
-		// $options = filter_var_array( $options, array(
-		// 	'sanitized_post_types'         => FILTER_FORCE_ARRAY,
-		// 	'sanitized_builtin_post_types' => FILTER_FORCE_ARRAY,
+		//  $options = filter_var_array( $options, array(
+		//  	'sanitized_post_types' => array(
+		// 		'filter' => FILTER_SANITIZE_STRING,
+		// 		'flags'  => FILTER_FORCE_ARRAY,
+		// 	),
+		//  	'sanitized_builtin_post_types' => array(
+		// 		'filter' => FILTER_SANITIZE_STRING,
+		// 		'flags'  => FILTER_FORCE_ARRAY,
+		// 	),
 		// 	'smarter_cache_enabled'        => FILTER_VALIDATE_INT,
 		// 	'last_modified_enabled'        => FILTER_VALIDATE_INT,
 		// 	'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
-		// ) );
+		//  ) );
+		 //echo '<pre>';var_dump($options);die();
 		return $options;
 	}
 	/**
