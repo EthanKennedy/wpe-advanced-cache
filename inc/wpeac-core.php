@@ -23,7 +23,6 @@ class WPEAC_Core {
 		if ( ! is_array( $options ) ) {
 			$options = array();
 		}
-		error_log( 'get' . implode (' ', $options ) );
 		$options = wp_parse_args( $options, array(
 			'sanitized_post_types'         => array(),
 			'sanitized_builtin_post_types' => array(),

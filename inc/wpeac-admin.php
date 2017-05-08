@@ -78,21 +78,20 @@ class WPEAC_Admin {
 	function cache_menu_settings_page() {
 		$options = WPEAC_Core::get();
 		$smarter_cache_enabled = $options['smarter_cache_enabled'];
-		WPEAC_Core::update('my', 'assinine');
+	//	var_dump($options);
 		?>
 		<div class="wrap">
 			<h2>Cache Options</h2>
-			<form method="get" action="options.php">
-				<input name ="test" value = 'thing'>
+			<form method="post" action="options.php">
 				<?php settings_fields( 'wpengine-advanced-cache-control' );?>
-				<?php //do_settings_sections( 'advanced_cache_control' ); ?>
+				<?php do_settings_sections( 'wpengine-advanced-cache-control' ); ?>
 				<table class="form-table">
 					<p>Increasing the Cache time on the site will make the site faster, while improving backend performance.
 						<br> <br>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Anytime a user is served a cached copy of your page, they don't have to go through WordPress to get it, which saves the user time, and the server resources.
 						<br> <br>The cache is purged in most functions that update post content, so often times it's best to set limits as high as possible. If you're seeing issues with content taking some time to update on your posts regularly, it may be best to reduce these limits. If the changes are one-offs, the purge cache button should update the content for your visitors.</p>
 						<?php
 						// Run through and build all the forms for each post type
-						foreach ( WPEAC_Core::get( 'sanitized_post_types' ) as $post_type ) {
+						foreach ( $options['sanitized_post_types'] as $post_type ) {
 							$this->cache_menu_settings_page_options( $post_type );
 						}
 						?>
@@ -107,7 +106,7 @@ class WPEAC_Admin {
 								If your posts and pages have gone more than 4 weeks without being updated, this option will allow you to cache them for up to 6 months by default. As posts pass 4 weeks without being updated, the cache header will be updated to 6 months.<p>
 									<td>
 										<select id="smarter_cache_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[smarter_cache_enabled]' ); ?>">
-											<?php $smarter_cache_enabled = WPEAC_Core::get( 'smarter_cache_enabled' ) ?>
+											<?php $smarter_cache_enabled = $options['smarter_cache_enabled'] ?>
 											<option value="1" <?php selected( $smarter_cache_enabled, 1 ); ?> >On</option>
 											<option value="0" <?php selected( $smarter_cache_enabled, 0 ); ?> >Off</option>
 										</select>
@@ -271,8 +270,8 @@ class WPEAC_Admin {
 		foreach ( self::get_sanitized_post_types() as $post_type ) {
 			$this->init_cache_control_settings( $post_type );
 		}
-		WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
-		WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
+		 WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
+		 WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
 	}
 		/**
 		 * Update global last modified
@@ -330,6 +329,7 @@ class WPEAC_Admin {
 	function default_cache_control_to_hour( $post_type ) {
 		WPEAC_Core::update( $post_type . '_cache_expires_value', 3600 );
 	}
+
 	/**
 	 * Validate Cache values
 	 *
@@ -342,12 +342,10 @@ class WPEAC_Admin {
 	 * @return int $input Cache control option
 	 */
 	function validate_cache_control_settings( $options ) {
-		$current = WPEAC_Core::get();
+
+		//$current = WPEAC_Core::get();
 		// extract( $options );
-		// echo '<pre>';
-		// var_dump( $options );
-		// echo '</pre>';
-		// die();
+//echo '<pre>'; var_dump( $options ); die();
 		// $current['smarter_cache_enabled'] = 0;
 		// return $current;
 		//return ( in_array( (int) $options, self::VALID_CACHE_CONTROL_OPTIONS ) ? $options : 3600 );
