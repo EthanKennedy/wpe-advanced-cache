@@ -1,6 +1,6 @@
 === WP Engine Advanced Cache ===
 
-Contributors: ekennedy, stevenkword
+Contributors: ethankennedy, stevenkword
 Tags: wpengine, cache, headers
 Requires at least: 3.5
 Tested up to: 4.7.4
