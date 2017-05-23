@@ -93,81 +93,81 @@ class WPEAC_Admin {
 						foreach ( $options['sanitized_post_types'] as $post_type ) {
 							$this->cache_menu_settings_page_options( $post_type );
 						}
-						?>
-						<!-- Give an option to turn off the "Smarter Cache" -->
-					</table>
-					<h3>Smarter Cache</h3>
-					<table class="form-table">
-						<tr valign="top">
-							<th scope="row">Smarter Cache</th>
-							<p>This option will allow your posts and pages to be cached for longer if they haven't been modified in a while.
-								<br> <br>
-								If your posts and pages have gone more than 4 weeks without being updated, this option will allow you to cache them for up to 6 months by default. As posts pass 4 weeks without being updated, the cache header will be updated to 6 months.<p>
-									<td>
-										<select id="smarter_cache_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[smarter_cache_enabled]' ); ?>">
-											<?php $smarter_cache_enabled = $options['smarter_cache_enabled'] ?>
-											<option value="1" <?php selected( $smarter_cache_enabled, 1 ); ?> >On</option>
-											<option value="0" <?php selected( $smarter_cache_enabled, 0 ); ?> >Off</option>
-										</select>
-									</td>
-								</tr>
-							</table>
-							<!-- Give an option to turn off the last-modified headers -->
-							<h3>Last-Modified Headers</h3>
-							<table class="form-table">
-								<tr valign="top">
-									<th scope="row">Last-Modified Headers</th>
-									<p>Last modified headers will encourage bots and users to use local cache instead of pulling content from the server each time. This will speed up their responses, and decrease the impact a heavy bot crawl could have on your site.
-										<br> <br>
-										Last-Modified headers are updated on specific posts based on the last time they were modified, and the most recent comment. They are also updated Globally on Theme change, or Menu updates. If a major change is made, the global Last-Modified headers can be updated using the option below. The Last-Modified headers sent from the server are always the most recent of those options.
-										<p>
-											<td>
-												<select id="last_modified_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[last_modified_enabled]' ); ?>">
-													<?php $last_modified_enabled = WPEAC_Core::get( 'last_modified_enabled' ) ?>
-													<option value='1' <?php selected( $last_modified_enabled, 1 ); ?> >On</option>
-													<option value='0' <?php selected( $last_modified_enabled, 0 ); ?> >Off</option>
-													<option value='2' <?php selected( $last_modified_enabled, 2 ); ?> >Only Enabled for Posts and Pages</option>
-												</select>
-											</td>
-										</tr>
-									</table>
-									<?php submit_button(); ?>
-								</form>
-								<table class="form-table">
-									<tr valign="top">
-										<th scope="row">Reset Global Last Modified</th>
-									</tr>
-								</table>
-								<p>Unless you're seeing major issues with stale content in a number of user's browsers, we recommend not using this option.
-									<br> <br>
-									This option will allow you to update the global Last-Modified headers on the site. This will force bots and browser that respect those headers to download a new version of each page. Doing so may cause a load during bot crawls, so it's recommended to avoid updating this if at all possible, especially on large sites.
-									<p>
-										<div id="results2"><?php echo 'Global Last-Modified Header currently set to ' . gmdate( 'D, d M Y H:i:s 	T', WPEAC_Core::get( 'wpe_ac_global_last_modified' ) )?></div>
-										<br>
-										<button class="button-primary" id="reset_global_last_modified" style="float:left">Reset Last-Modified</button>
-										<br>
-										<br>
-										<br>
-									</table>
-									<!-- Add a button to purge specific posts from cache -->
-									<?php
-									if ( isset( $_SERVER['IS_WPE'] ) ) {
-										?>
-										<table class="form-table">
-											<tr valign="top">
-												<th scope="row">Purge Single Post</th>
-												<td>
-													<input id="purge_varnish_post_id_input">
-													Accepts Post ID Number
-												</td>
-											</tr>
-										</table>
-										<div id="results"><br></div>
-										<br>
-										<button class="button-primary" id="purge_varnish_post_id" style="float:left">Purge Post</button>
-									</div>
-									<?php
-									}
+					?>
+				</table>
+				<!-- Give an option to turn off the "Smarter Cache" -->
+				<h3>Smarter Cache</h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">Smarter Cache</th>
+						<p>
+							This option will allow your posts and pages to be cached for longer if they haven't been modified in a while.
+							<br> <br>
+							If your posts and pages have gone more than 4 weeks without being updated, this option will allow you to cache them for up to 6 months by default. As posts pass 4 weeks without being updated, the cache header will be updated to 6 months.
+						</p>
+						<td>
+							<select id="smarter_cache_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[smarter_cache_enabled]' ); ?>">
+							<?php $smarter_cache_enabled = $options['smarter_cache_enabled'] ?>
+							<option value="1" <?php selected( $smarter_cache_enabled, 1 ); ?> >On</option>
+							<option value="0" <?php selected( $smarter_cache_enabled, 0 ); ?> >Off</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<!-- Give an option to turn off the last-modified headers -->
+				<h3>Last-Modified Headers</h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">Last-Modified Headers</th>
+						<p>
+							Last modified headers will encourage bots and users to use local cache instead of pulling content from the server each time. This will speed up their responses, and decrease the impact a heavy bot crawl could have on your site.
+							<br> <br>
+							Last-Modified headers are updated on specific posts based on the last time they were modified, and the most recent comment. They are also updated Globally on Theme change, or Menu updates. If a major change is made, the global Last-Modified headers can be updated using the option below. The Last-Modified headers sent from the server are always the most recent of those options.
+						</p>
+						<td>
+							<select id="last_modified_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[last_modified_enabled]' ); ?>">
+								<?php $last_modified_enabled = WPEAC_Core::get( 'last_modified_enabled' ) ?>
+								<option value='1' <?php selected( $last_modified_enabled, 1 ); ?> >On</option>
+								<option value='0' <?php selected( $last_modified_enabled, 0 ); ?> >Off</option>
+								<option value='2' <?php selected( $last_modified_enabled, 2 ); ?> >Only Enabled for Posts and Pages</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<?php submit_button(); ?>
+			</form>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row">Reset Global Last Modified</th>
+				</tr>
+			</table>
+			<p>
+				Unless you're seeing major issues with stale content in a number of user's browsers, we recommend not using this option.
+				<br> <br>
+				This option will allow you to update the global Last-Modified headers on the site. This will force bots and browser that respect those headers to download a new version of each page. Doing so may cause a load during bot crawls, so it's recommended to avoid updating this if at all possible, especially on large sites.
+			</p>
+			<div id="results2"><?php echo esc_html( 'Global Last-Modified Header currently set to ' . gmdate( 'D, d M Y H:i:s 	T', WPEAC_Core::get( 'wpe_ac_global_last_modified' ) ) )?></div>
+			<br>
+			<button class="button-primary" id="reset_global_last_modified" style="float:left">Reset Last-Modified</button>
+			<br>
+			<br>
+			<br>
+			<!-- Add a button to purge specific posts from cache -->
+			<?php if ( isset( $_SERVER['IS_WPE'] ) ) { ?>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">Purge Single Post</th>
+						<td>
+							<input id="purge_varnish_post_id_input">
+							Accepts Post ID Number
+						</td>
+					</tr>
+				</table>
+				<div id="results"><br></div>
+				<br>
+				<button class="button-primary" id="purge_varnish_post_id" style="float:left">Purge Post</button>
+		</div><!-- .wrap -->
+		<?php }
 	}
 	/**
 	 * Build cache selection drop down
@@ -180,8 +180,7 @@ class WPEAC_Admin {
 	 * @return HMTL Drop down element and descriptor for each post type
 	 */
 	function cache_menu_settings_page_options( $post_type ) {
-		$current_cache_time = WPEAC_Core::get( $post_type . '_cache_expires_value' );
-		?>
+		$current_cache_time = WPEAC_Core::get( $post_type . '_cache_expires_value' ); ?>
 		<tr valign="top">
 			<th scope="row"> <?php echo esc_html( ucfirst( $post_type ) ) ?> Cache Length</th>
 			<td>
@@ -211,13 +210,9 @@ class WPEAC_Admin {
 	 */
 	function build_cache_menu( $current_cache_time ) {
 		foreach ( self::VALID_CACHE_CONTROL_OPTIONS as $human_readable => $seconds ) {
-			?>
-			<option value=<?php echo $seconds;
-			?> <?php echo selected( $current_cache_time, $seconds ); ;
-			?> ><?php echo $human_readable;
-			?></option>
-			<?php
-
+			 echo '<option value="' . esc_attr( $seconds ) . '" ' . selected( $current_cache_time, $seconds ) . '>';
+			 echo esc_html( $human_readable );
+			 echo '</option>';
 		}
 	}
 	/**

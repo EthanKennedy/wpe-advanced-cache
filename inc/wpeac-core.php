@@ -8,7 +8,7 @@ class WPEAC_Core {
 	/**
 	 * Update an option
 	 */
-	static function update( $key, $value ) {
+	public static function update( $key, $value ) {
 		$options = self::get();
 		$options[ $key ] = $value;
 		update_option( self::CONFIG_OPTION, $options );
@@ -18,7 +18,7 @@ class WPEAC_Core {
 	 *
 	 * @return string|array|null
 	 */
-	static function get( $opt = null ) {
+	public static function get( $opt = null ) {
 		$options = get_option( self::CONFIG_OPTION );
 		if ( ! is_array( $options ) ) {
 			$options = array();
