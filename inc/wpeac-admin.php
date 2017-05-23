@@ -357,9 +357,9 @@ class WPEAC_Admin {
 			'last_modified_enabled'        => FILTER_VALIDATE_INT,
 			'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
 		);
-		if( isset( $current['sanitized_post_types'] ) ) {
-			foreach( $current['sanitized_post_types'] as $post_type ) {
-				$validations[$post_type.'_cache_expires_value'] = FILTER_SANITIZE_STRING;
+		if ( isset( $current['sanitized_post_types'] ) ) {
+			foreach ( $current['sanitized_post_types'] as $post_type ) {
+				$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
 			}
 		}
 		// $options = filter_var_array( $options, $validations );
