@@ -55,11 +55,11 @@ class WPEAC_Core {
 	 * @param string $post_id Id of the specific post being checked
 	 * @return last modified headers
 	 */
-	function send_header_last_modified( $last_modified, $post_id, $post_type ) {
+	public static function send_header_last_modified( $last_modified, $post_id, $post_type ) {
 		if ( is_user_logged_in() ) {
 			return;
 		}
-		$last_modified_toggle = get_option( 'last_modified_enabled' );
+		$last_modified_toggle = self::get( 'last_modified_enabled' );
 		//serve last modified headers if they're turned on, or if it's set to only builtins and we're on a builtin
 		if ( '1' == $last_modified_toggle && in_array( $post_type , self::get( 'sanitized_post_types' ) ) ||
 			 ( '2' == $last_modified_toggle && in_array( $post_type , self::get( 'sanitized_builtin_post_types' ) ) )
@@ -94,7 +94,7 @@ class WPEAC_Core {
 	 * @param string $post_id Id of the specific post being checked
 	 * @return cache control headers
 	 */
-	function send_header_cache_control_length( $last_modified, $post_id, $post_type ) {
+	public static function send_header_cache_control_length( $last_modified, $post_id, $post_type ) {
 		$last_mod_seconds = time() - $last_modified;
 		if ( self::get( 'smarter_cache_enabled' ) &&
 			//Let's only "Smarter cache" builtins
