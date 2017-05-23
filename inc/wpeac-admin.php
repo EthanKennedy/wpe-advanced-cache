@@ -23,7 +23,7 @@ class WPEAC_Admin {
 	function __construct() {
 		add_action( 'admin_menu', array( $this, 'cache_menu_settings' ) );
 		// Enqueue JS for Ajax calls on admin menu pages
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		// Ajax callbacks
 		add_action( 'wp_ajax_purge_varnish_post_id', array( $this, 'purge_varnish_post_id_callback' ) );
 		add_action( 'wp_ajax_reset_global_last_modified', array( $this, 'reset_global_last_modified_callback' ) );
@@ -57,8 +57,8 @@ class WPEAC_Admin {
 	 * @uses wp_enqueue_script
 	 * @return null
 	 */
-	function enqueue_scripts( $hook ) {
-		if ( 'toplevel_page_cache-settings' != $hook ) {
+	function admin_enqueue_scripts( $hook ) {
+		if ( 'settings_page_cache-settings' != $hook ) {
 			return;
 		}
 		wp_enqueue_script( 'wpe-advanced-cache', plugins_url( 'js/wpe-advanced-cache.js', dirname( __FILE__ ) ), array( 'jquery' ), 1, true );
@@ -72,7 +72,7 @@ class WPEAC_Admin {
 	 * @action admin_menu
 	 * @see get_sanitized_post_types
 	 * @see cache_menu_settings_page_options
-	 * @uses settings_fields, do_settings_sections, get_option, gmdate, class_exists
+	 * @uses settings_fields, do_settings_sections, gmdate, class_exists
 	 * @return HTML of admin page
 	 */
 	function cache_menu_settings_page() {
@@ -176,7 +176,6 @@ class WPEAC_Admin {
 	 *
 	 * @since 0.1.1
 	 * @see build_cache_menu
-	 * @uses get_option
 	 * @param string $post_type the post_type of the post we're working to add to the menu
 	 * @return HMTL Drop down element and descriptor for each post type
 	 */
@@ -200,7 +199,6 @@ class WPEAC_Admin {
 	 * Pulls in the values from the $this->VALID_CACHE_CONTROL_OPTIONS global to fill out drop down menus for each post type.
 	 *
 	 * @since 0.1.1
-	 * @uses get_option,
 	 * @global array $this->VALID_CACHE_CONTROL_OPTIONS {
 	 *       Array of valid cache times and their Human Readable equivalents
 	 *
@@ -321,7 +319,7 @@ class WPEAC_Admin {
 	 * This may be a little aggressive, but it'll have a huge impact out of the gate.
 	 *
 	 * @since 0.1.2
-	 * @uses get_option, update_option
+	 * @uses update_option
 	 * @param string $post_type The post type that we're verifying
 	 * @return null
 	 */

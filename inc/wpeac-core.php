@@ -49,7 +49,7 @@ class WPEAC_Core {
 	 *
 	 * @since 0.1.2
 	 * @see most_recent_comment_timestamp, get_sanitized_post_types
-	 * @uses get_option, is_user_logged_in, apply_filters
+	 * @uses is_user_logged_in, apply_filters
 	 * @param string $post_type Post type of the requests
 	 * @param string $last_modified Epoch of get_the_modified_date of the requests
 	 * @param string $post_id Id of the specific post being checked
@@ -88,7 +88,7 @@ class WPEAC_Core {
 	 *
 	 * @since 0.3.6
 	 * @see most_recent_comment_timestamp, get_sanitized_post_types
-	 * @uses get_option, is_user_logged_in, comments_open, apply_filters
+	 * @uses is_user_logged_in, comments_open, apply_filters
 	 * @param string $post_type Post type of the requests
 	 * @param string $last_modified Epoch of get_the_modified_date of the requests
 	 * @param string $post_id Id of the specific post being checked
@@ -146,7 +146,6 @@ class WPEAC_Core {
 	 * Compares the last modified passed with the most recent comment timestamp.
 	 *
 	 * @since 0.3.6
-	 * @uses get_option
 	 * @param string $last_modified variable used to compare, and return.
 	 * @param string $post_id post id used to pull comment data
 	 * @return string $true_last_modified timestamp to proceed with
@@ -164,13 +163,12 @@ class WPEAC_Core {
 	 * Compares the last modified passed in with the global value and returns the larger option
 	 *
 	 * @since 0.3.6
-	 * @uses get_option
 	 * @param string $last_modified get_the_modified_date last time the post was modified
 	 * @return string $true_last_modified timestamp to proceed with
 	 */
 	function global_last_modified_compare( $last_modified ) {
 		//get the global last modified as a baseline
-		$global_last_modified = get_option( 'wpe_ac_global_last_modified' );
+		$global_last_modified = self::get( 'wpe_ac_global_last_modified' );
 		//compare the global to the last_modified time passed as part of the request
 		return ( $global_last_modified > $last_modified ? $global_last_modified : $last_modified );
 	}
