@@ -1,7 +1,7 @@
 === WP Engine Advanced Cache ===
 
 Contributors: ethankennedy, stevenkword
-Tags: wpengine, cache, headers
+Tags: wpengine, cache, headers, last-modified
 Requires at least: 3.5
 Tested up to: 4.7.4
 Stable tag: 0.0.1
@@ -16,6 +16,8 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 
 == Changelog ==
 
+0.4.0 - Options refactor to a single value stored in wp_options
+
 0.3.6 - Code refactor to use filters.
 			- Refactored code to add headers.
 
@@ -24,14 +26,14 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 0.3.4 - More code improvements and documentation updates.
 
 0.3.3 - General code improvements, and other documentation improvements.
-      - Added support for non-wpengine installs.
+			- Added support for non-wpengine installs.
 
 0.3.2 - Added global_last_modified function and various calls that could affect all requests to the server.
 
 0.3.1 - Added additional functionality around last_modified headers in respect to most recent comment.
 
 0.3.0 - Added last_modified headers to requests based on get_the_modified_date.
-      - Added Smarter Cache Functionality.
+			- Added Smarter Cache Functionality.
 
 0.2.1 - Added validation to the ajax purge tool.
 
