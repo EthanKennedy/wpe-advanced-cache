@@ -28,7 +28,6 @@ new WPEAC_Core();
  * @action wp
  * @uses get_the_ID, get_post_type, get_the_modified_date
  * @see WPEAC_Core::send_header_cache_control_length, WPEAC_Core::send_header_last_modified
- * @return null
  */
 function wpe_ac_add_cache_header() {
 	if ( ! is_singular() ) {
@@ -39,7 +38,5 @@ function wpe_ac_add_cache_header() {
 	$last_modified = get_the_modified_date( 'U' );
 	WPEAC_Core::send_header_cache_control_length( $last_modified, $post_id, $post_type );
 	WPEAC_Core::send_header_last_modified( $last_modified, $post_id, $post_type );
-	// Adds header displaying post type in order to debug functionality
-	// header( "Post Type: $post_type" );
 }
 add_action( 'wp', 'wpe_ac_add_cache_header' );

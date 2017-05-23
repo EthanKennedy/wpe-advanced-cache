@@ -265,30 +265,30 @@ class WPEAC_Admin {
 		WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
 		WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
 	}
-		/**
-		 * Update global last modified
-		 *
-		 * Updates the global last modified option to the current timestamp
-		 *
-		 * @since 0.3.2
-		 * @uses update_option
-		 * @action after_switch_theme
-		 * @action edited_nav_menu
-		 * @return null
-		 */
+	/**
+	 * Update global last modified
+	 *
+	 * Updates the global last modified option to the current timestamp
+	 *
+	 * @since 0.3.2
+	 * @uses update_option
+	 * @action after_switch_theme
+	 * @action edited_nav_menu
+	 * @return null
+	 */
 	function update_global_last_modified() {
-			$current_global_variable = date( 'U' );
-			/**
-			 * Update global last modified variable.
-			 *
-			 * Allows the customization of global last_modified variable.
-			 *
-			 * @since 0.3.6
-			 *
-			 * @param string $current_global_variable the current value of the global last modified in epoch format.
-			 */
-			$current_global_variable = apply_filters( 'wpe_ac_global_last_modified_variable', $current_global_variable );
-			WPEAC_Core::update( 'wpe_ac_global_last_modified', (int) $current_global_variable );
+		$current_global_variable = date( 'U' );
+		/**
+		 * Update global last modified variable.
+		 *
+		 * Allows the customization of global last_modified variable.
+		 *
+		 * @since 0.3.6
+		 *
+		 * @param string $current_global_variable the current value of the global last modified in epoch format.
+		 */
+		$current_global_variable = apply_filters( 'wpe_ac_global_last_modified_variable', $current_global_variable );
+		WPEAC_Core::update( 'wpe_ac_global_last_modified', (int) $current_global_variable );
 	}
 	/**
 	 * Register Cache options for each post_type
