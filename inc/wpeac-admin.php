@@ -269,8 +269,8 @@ class WPEAC_Admin {
 		foreach ( self::get_sanitized_post_types() as $post_type ) {
 			$this->init_cache_control_settings( $post_type );
 		}
-		 WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
-		 WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
+		WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
+		WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
 	}
 		/**
 		 * Update global last modified
