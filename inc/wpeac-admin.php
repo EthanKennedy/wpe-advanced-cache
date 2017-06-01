@@ -77,7 +77,6 @@ class WPEAC_Admin {
 	 */
 	function cache_menu_settings_page() {
 		$options = WPEAC_Core::get();
-		$smarter_cache_enabled = $options['smarter_cache_enabled'];
 		?>
 		<div class="wrap">
 			<h2>Cache Options</h2>
@@ -126,7 +125,7 @@ class WPEAC_Admin {
 						</p>
 						<td>
 							<select id="last_modified_enabled" name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[last_modified_enabled]' ); ?>">
-								<?php $last_modified_enabled = WPEAC_Core::get( 'last_modified_enabled' ) ?>
+								<?php $last_modified_enabled = $options['last_modified_enabled'] ?>
 								<option value='1' <?php selected( $last_modified_enabled, 1 ); ?> >On</option>
 								<option value='0' <?php selected( $last_modified_enabled, 0 ); ?> >Off</option>
 								<option value='2' <?php selected( $last_modified_enabled, 2 ); ?> >Only Enabled for Posts and Pages</option>
@@ -135,6 +134,7 @@ class WPEAC_Admin {
 					</tr>
 				</table>
 				<?php submit_button(); ?>
+				<input type="hidden" id="wpe_ac_global_last_modified" name="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[wpe_ac_global_last_modified]' ); ?>" value="<?php echo WPEAC_Core::get( 'wpe_ac_global_last_modified' )?>"/>
 			</form>
 			<table class="form-table">
 				<tr valign="top">
@@ -146,7 +146,7 @@ class WPEAC_Admin {
 				<br> <br>
 				This option will allow you to update the global Last-Modified headers on the site. This will force bots and browser that respect those headers to download a new version of each page. Doing so may cause a load during bot crawls, so it's recommended to avoid updating this if at all possible, especially on large sites.
 			</p>
-			<div id="results2"><?php echo esc_html( 'Global Last-Modified Header currently set to ' . gmdate( 'D, d M Y H:i:s 	T', WPEAC_Core::get( 'wpe_ac_global_last_modified' ) ) )?></div>
+			<div id="wpe_ac_global_last_modified_text"><?php echo esc_html( 'Global Last-Modified Header currently set to ' . gmdate( 'D, d M Y H:i:s 	T',  WPEAC_Core::get( 'wpe_ac_global_last_modified' ) ) )?></div>
 			<br>
 			<button class="button-primary" id="reset_global_last_modified" style="float:left">Reset Last-Modified</button>
 			<br>
@@ -163,7 +163,7 @@ class WPEAC_Admin {
 						</td>
 					</tr>
 				</table>
-				<div id="results"><br></div>
+				<div id="purge_results_text"><br></div>
 				<br>
 				<button class="button-primary" id="purge_varnish_post_id" style="float:left">Purge Post</button>
 		</div><!-- .wrap -->
@@ -241,7 +241,7 @@ class WPEAC_Admin {
 	 */
 	function reset_global_last_modified_callback() {
 		$this->update_global_last_modified();
-		echo 'Global Last-Modified Header updated to ' . gmdate( 'D, d M Y H:i:s T', WPEAC_Core::get( 'wpe_ac_global_last_modified' ) );
+		echo WPEAC_Core::get( 'wpe_ac_global_last_modified' );
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 	//__________________________________________________________________________________________________________________
@@ -253,7 +253,7 @@ class WPEAC_Admin {
 	 *
 	 * @since 0.1.1
 	 * @action admin_init
-	 * @see get_sanitized_post_types, cache_control_settings_register,  default_cache_control_to_hour
+	 * @see get_sanitized_post_types, cache_control_settings_register,
 	 * @uses register_setting
 	 * @return null
 	 */
@@ -338,7 +338,7 @@ class WPEAC_Admin {
 		if ( ! is_array( $options ) ) {
 			return $current;
 		}
-
+		//echo '<pre>';var_dump($options);
 		$validations = array(
 			'sanitized_post_types' => array(
 				'filter' => FILTER_SANITIZE_STRING,
@@ -350,15 +350,15 @@ class WPEAC_Admin {
 			),
 			'smarter_cache_enabled'        => FILTER_VALIDATE_INT,
 			'last_modified_enabled'        => FILTER_VALIDATE_INT,
-			'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
+			'wpe_ac_global_last_modified'  => FILTER_VALIDATE_INT,
 		);
 		if ( isset( $current['sanitized_post_types'] ) ) {
 			foreach ( $current['sanitized_post_types'] as $post_type ) {
-				$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
+				$validations[ $post_type . '_cache_expires_value' ] = FILTER_VALIDATE_INT;
 			}
 		}
-		// $options = filter_var_array( $options, $validations );
-		// echo '<pre>';var_dump($options);die();
+		//$options = filter_var_array( $options, $validations );
+		//echo '<pre>';var_dump($options);die();
 		return $options;
 	}
 	/**

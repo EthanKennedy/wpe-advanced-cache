@@ -19,6 +19,7 @@ class WPEAC_Core {
 	 * @return string|array|null
 	 */
 	public static function get( $opt = null ) {
+		error_log( $opt );
 		$options = get_option( self::CONFIG_OPTION );
 		if ( ! is_array( $options ) ) {
 			$options = array();

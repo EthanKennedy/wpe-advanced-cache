@@ -8,7 +8,7 @@ jQuery( document ).ready( function( $ ) {
 		};
 
 		$.post(ajaxurl, data, function(response) {
-			$ ('#results').text(response);
+			$ ('#purge_results_text').text(response);
 		});
 	});
 
@@ -18,7 +18,9 @@ jQuery( document ).ready( function( $ ) {
 		};
 		if (confirm("Resetting the Global Last-Modified will lead to more users and bots hitting the site. Are you sure you'd like to proceed?") === true) {
 			$.post(ajaxurl, data, function(response) {
-				$ ('#results2').text(response);
+				var d = new Date(response * 1000);
+				$ ('#wpe_ac_global_last_modified_text').text('Global Last-Modified Header updated to ' + d.toUTCString());
+				$ ('#wpe_ac_global_last_modified').val(response);
 			});
 		}
 	});
