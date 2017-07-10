@@ -329,9 +329,7 @@ class WPEAC_Admin {
 	 * Defaults to 1 hour if the option being set isn't valid.
 	 *
 	 * @since 0.1.2
-	 * @global array VALID_CACHE_CONTROL_OPTIONS {
-	 *         Array of valid cache control times from the global variable
-	 * @return int $input Cache control option
+	 * @param array $options
 	 */
 	function validate_cache_control_settings( $options ) {
 		$current = WPEAC_Core::get();
@@ -339,6 +337,20 @@ class WPEAC_Admin {
 			return $current;
 		}
 		//echo '<pre>';var_dump($options);
+		$validations = return_validations_array();
+		//$options = filter_var_array( $options, $validations );
+		//echo '<pre>';var_dump($options);die();
+		return $options;
+	}
+	/**
+	 * Return Validation Array
+	 *
+	 * Returns the array of validators to compare to the options passed in when saving the values to the datbase
+	 *
+	 * @since 0.4.1
+	 * @return array $validations
+	 */
+	function return_validations_array() {
 		$validations = array(
 			'sanitized_post_types' => array(
 				'filter' => FILTER_SANITIZE_STRING,
@@ -357,9 +369,7 @@ class WPEAC_Admin {
 				$validations[ $post_type . '_cache_expires_value' ] = FILTER_VALIDATE_INT;
 			}
 		}
-		//$options = filter_var_array( $options, $validations );
-		//echo '<pre>';var_dump($options);die();
-		return $options;
+		return $validations;
 	}
 	/**
 	 * Purges cache based on post number
