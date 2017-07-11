@@ -338,7 +338,7 @@ class WPEAC_Admin {
 		}
 		//echo '<pre>';var_dump($options);
 		$validations = $this->return_validations_array();
-		//$options = filter_var_array( $options, $validations );
+		$options = filter_var_array( $options, $validations );
 		//echo '<pre>';var_dump($options);die();
 		return $options;
 	}
@@ -360,14 +360,12 @@ class WPEAC_Admin {
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
-			'smarter_cache_enabled'        => FILTER_VALIDATE_INT,
-			'last_modified_enabled'        => FILTER_VALIDATE_INT,
-			'wpe_ac_global_last_modified'  => FILTER_VALIDATE_INT,
+			'smarter_cache_enabled'        => FILTER_SANITIZE_STRING,
+			'last_modified_enabled'        => FILTER_SANITIZE_STRING,
+			'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
 		);
-		if ( isset( $current['sanitized_post_types'] ) ) {
-			foreach ( $current['sanitized_post_types'] as $post_type ) {
-				$validations[ $post_type . '_cache_expires_value' ] = FILTER_VALIDATE_INT;
-			}
+		foreach ( $this->get_sanitized_post_types() as $post_type ) {
+			$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
 		}
 		return $validations;
 	}
