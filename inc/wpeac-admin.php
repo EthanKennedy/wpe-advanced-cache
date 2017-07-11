@@ -336,10 +336,8 @@ class WPEAC_Admin {
 		if ( ! is_array( $options ) ) {
 			return $current;
 		}
-		//echo '<pre>';var_dump($options);
-		$validations = $this->return_validations_array();
+		$validations = $this->return_validations_array( $options['sanitized_post_types'] );
 		$options = filter_var_array( $options, $validations );
-		//echo '<pre>';var_dump($options);die();
 		return $options;
 	}
 	/**
@@ -351,6 +349,7 @@ class WPEAC_Admin {
 	 * @return array $validations
 	 */
 	function return_validations_array() {
+		$sanitized_post_types = $this->get_sanitized_post_types();
 		$validations = array(
 			'sanitized_post_types' => array(
 				'filter' => FILTER_SANITIZE_STRING,
@@ -364,7 +363,7 @@ class WPEAC_Admin {
 			'last_modified_enabled'        => FILTER_SANITIZE_STRING,
 			'wpe_ac_global_last_modified'  => FILTER_SANITIZE_STRING,
 		);
-		foreach ( $this->get_sanitized_post_types() as $post_type ) {
+		foreach ( $sanitized_post_types as $post_type ) {
 			$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
 		}
 		return $validations;
@@ -386,6 +385,9 @@ class WPEAC_Admin {
 			$purge_response = 'This function only works on a WP Engine installation.';
 		} elseif ( 1 == $post_id ) {
 			$purge_response = "Post ID #1 Will purge the entire cache, I'd recommend using the Purge All Caches button to get this done";
+		} elseif ( method_exists( WpeCommon, purge_varnish_cache ) != true ) {
+			//If we mess with the purge_varnish_cache function, I don't want to hard error anyone.
+			$purge_response = 'There may be something wrong with the WP Engine Function that this feature uses. Use the standard purge cache instead.';
 		} elseif ( in_array( get_post_type( $post_id ), WPEAC_Core::get( 'sanitized_post_types' ) ) ) {
 			WpeCommon::purge_varnish_cache( (int) $post_id );
 			$post_title = get_the_title( $post_id );
