@@ -337,7 +337,7 @@ class WPEAC_Admin {
 			return $current;
 		}
 		//echo '<pre>';var_dump($options);
-		$validations = return_validations_array();
+		$validations = $this->return_validations_array();
 		//$options = filter_var_array( $options, $validations );
 		//echo '<pre>';var_dump($options);die();
 		return $options;
