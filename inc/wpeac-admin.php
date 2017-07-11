@@ -336,7 +336,7 @@ class WPEAC_Admin {
 		if ( ! is_array( $options ) ) {
 			return $current;
 		}
-		$validations = $this->return_validations_array( $options['sanitized_post_types'] );
+		$validations = $this->return_validations_array();
 		$options = filter_var_array( $options, $validations );
 		return $options;
 	}
