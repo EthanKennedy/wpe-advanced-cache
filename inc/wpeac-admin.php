@@ -296,7 +296,6 @@ class WPEAC_Admin {
 	 * Actually goes through and registers each setting for the valid post types being passed.
 	 *
 	 * @since 0.1.1
-	 * @see validate_cache_control_settings(
 	 * @uses register_setting
 	 * @param string $post_type The post type that we're registering settings against
 	 * @return null
@@ -348,7 +347,7 @@ class WPEAC_Admin {
 	 * @since 0.4.1
 	 * @return array $validations
 	 */
-	function return_validations_array() {
+	public function return_validations_array() {
 		$sanitized_post_types = $this->get_sanitized_post_types();
 		$validations = array(
 			'sanitized_post_types' => array(
