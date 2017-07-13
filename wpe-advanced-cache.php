@@ -3,7 +3,7 @@
  * Plugin Name: WP Engine Advanced Cache Options
  * Plugin URI:
  * Description: This plugin works to increase cache time across the board, and gives a smarter way to purge the cache
- * Version: 0.3.6
+ * Version: 0.4.1
  * Author: Ethan Kennedy
  * Author URI: http://wpengine.com
  * License: GPL2.

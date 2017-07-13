@@ -153,6 +153,7 @@ class WPEAC_Admin {
 			<br>
 			<br>
 			<!-- Add a button to purge specific posts from cache -->
+			<!-- only add the button on a WP ENGINE site -->
 			<?php if ( isset( $_SERVER['IS_WPE'] ) ) { ?>
 				<table class="form-table">
 					<tr valign="top">
@@ -279,7 +280,7 @@ class WPEAC_Admin {
 	function update_global_last_modified() {
 		$current_global_variable = date( 'U' );
 		/**
-		 * Update global last modified variable.
+		 * Filter global last mod var
 		 *
 		 * Allows the customization of global last_modified variable.
 		 *
@@ -291,9 +292,11 @@ class WPEAC_Admin {
 		WPEAC_Core::update( 'wpe_ac_global_last_modified', (int) $current_global_variable );
 	}
 	/**
-	 * Register Cache options for each post_type
+	 * Set Default Cache Times
 	 *
-	 * Actually goes through and registers each setting for the valid post types being passed.
+	 * Works with other function to set cache times when none are present.
+	 *
+	 * @TODO This function seems largely useless and can be condensed with default_cache_control_to_hour or vice versa
 	 *
 	 * @since 0.1.1
 	 * @uses register_setting
@@ -322,13 +325,15 @@ class WPEAC_Admin {
 	}
 
 	/**
-	 * Validate Cache values
+	 * Validate all options
 	 *
-	 * Validate the cache options we're setting are valid, and are part of our global array.
-	 * Defaults to 1 hour if the option being set isn't valid.
+	 * Validates all options being passed in as part of our option blob on form submit
 	 *
 	 * @since 0.1.2
-	 * @param array $options
+	 * @param array $options the options blob being saved to the database
+	 * @see return_validations_array
+	 * @uses filter_var_array
+	 * @return array $options Validated options array
 	 */
 	function validate_cache_control_settings( $options ) {
 		$current = WPEAC_Core::get();
@@ -342,9 +347,10 @@ class WPEAC_Admin {
 	/**
 	 * Return Validation Array
 	 *
-	 * Returns the array of validators to compare to the options passed in when saving the values to the datbase
+	 * Returns the array of validators to compare to the options passed in when saving the values to the database
 	 *
 	 * @since 0.4.1
+	 * @see validate_cache_control_settings
 	 * @return array $validations
 	 */
 	public function return_validations_array() {
@@ -378,6 +384,8 @@ class WPEAC_Admin {
 	 * @uses get_post_type, get_the_title
 	 * @param string $post_id This should be the number to a valid post, human input.
 	 * @return string $purge_response Purge response based on input
+	 *
+	 * @TODO Maybe we can have this work using post titles? Maybe not, since people typo a lot?
 	 */
 	public static function purge_cache_by_post_id( $post_id ) {
 		if ( ! class_exists( WpeCommon ) ) {

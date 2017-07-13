@@ -16,6 +16,9 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 
 == Changelog ==
 
+0.4.1 - Added a few more comments/doc blocks
+			- Updated code to be functional, pending more testing
+
 0.4.0 - Options refactor to a single value stored in wp_options
 
 0.3.6 - Code refactor to use filters.
