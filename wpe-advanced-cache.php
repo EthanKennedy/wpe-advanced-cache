@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WP Engine Advanced Cache Options
- * Plugin URI:
+ * Plugin URI: https://github.com/EthanKennedy/wpe-advanced-cache
  * Description: This plugin works to increase cache time across the board, and gives a smarter way to purge the cache
- * Version: 0.4.1
- * Author: Ethan Kennedy
- * Author URI: http://wpengine.com
+ * Version: 1.0.0
+ * Author: Ethan Kennedy, Steven Word
+ * Author URI: http://ethankennedy.me
  * License: GPL2.
  */
 

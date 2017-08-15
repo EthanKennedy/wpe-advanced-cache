@@ -3,8 +3,8 @@
 Contributors: ethankennedy, stevenkword
 Tags: wpengine, cache, headers, last-modified
 Requires at least: 3.5
-Tested up to: 4.7.4
-Stable tag: 0.0.1
+Tested up to: 4.8
+Stable tag: 1.0.0
 
 This plugin is a tool that leverages some specific WP Engine tools, as well as general web options for increasing the cacheability of a WordPress site.
 
@@ -15,6 +15,8 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 == Known Issues ==
 
 == Changelog ==
+
+1.0   - Initial release
 
 0.4.1 - Added a few more comments/doc blocks
 			- Updated code to be functional, pending more testing
