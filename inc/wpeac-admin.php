@@ -136,6 +136,7 @@ class WPEAC_Admin {
 				<?php submit_button(); ?>
 				<input type="hidden" id="wpe_ac_global_last_modified" name="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[wpe_ac_global_last_modified]' ); ?>" value="<?php echo WPEAC_Core::get( 'wpe_ac_global_last_modified' )?>"/>
 			</form>
+			<hr>
 			<table class="form-table">
 				<tr valign="top">
 					<th scope="row">Reset Global Last Modified</th>
@@ -152,6 +153,7 @@ class WPEAC_Admin {
 			<br>
 			<br>
 			<br>
+			<hr>
 			<!-- Add a button to purge specific posts from cache -->
 			<!-- only add the button on a WP ENGINE site -->
 			<?php if ( isset( $_SERVER['IS_WPE'] ) ) { ?>
