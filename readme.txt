@@ -12,9 +12,25 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 
 This plugin is a tool that leverages some specific WP Engine tools, as well as general web options for increasing the cacheability of a WordPress site.
 
+== Screenshots ==
+
+1. Dynamically generated public post type cache options
+2. Last-modified and smarter-cache global options
+3. Purge individual posts from cache.
+
+== Installation ==
+
+1. Upload the wpe-advanced-cache folder to the plugins directory in your WordPress installation
+
+2. Activate the plugin
+
+3. Click on the "Cache Settings" link under the Settings Menu.
+
+4. Configure the cache options for your public post types, and manage other caching related global options.
+
 == Changelog ==
 
-1.0.1 - Removed Known Issues Portion of Readme
+1.0.1 - Removed Known Issues Portion of Readme, added other information
 			- Added formatting to admin menu page
 
 1.0.0 - Initial release
