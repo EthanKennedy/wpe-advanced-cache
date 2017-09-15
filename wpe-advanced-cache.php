@@ -55,4 +55,4 @@ function wpe_ac_add_api_cache_header() {
 	WPEAC_CORE::send_header_cache_control_api();
 }
 
-add_action( 'rest_api_init', wpe_ac_add_api_cache_header );
+add_action( 'rest_api_init', 'wpe_ac_add_api_cache_header' );
