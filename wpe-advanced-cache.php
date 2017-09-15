@@ -40,3 +40,19 @@ function wpe_ac_add_cache_header() {
 	WPEAC_Core::send_header_last_modified( $last_modified, $post_id, $post_type );
 }
 add_action( 'wp', 'wpe_ac_add_cache_header' );
+
+	/**
+	 * Add cache headers for API end-points
+	 *
+	 * Adds a cache header in the same way we add them for posts
+	 *
+	 * @since 1.1
+	 * @action rest_api_init
+	 * @see WPEAC_CORE::send_header_cache_control_api
+	 */
+
+function wpe_ac_add_api_cache_header() {
+	WPEAC_CORE::send_header_cache_control_api();
+}
+
+add_action( 'rest_api_init', wpe_ac_add_api_cache_header );
