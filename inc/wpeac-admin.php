@@ -185,7 +185,8 @@ class WPEAC_Admin {
 	function cache_menu_settings_page_options( $post_type ) {
 		$current_cache_time = WPEAC_Core::get( $post_type . '_cache_expires_value' ); ?>
 		<tr valign="top">
-			<th scope="row"> <?php echo esc_html( ucfirst( $post_type ) ) ?> Cache Length</th>
+			<th scope="row"> <?php echo esc_html( ( 'rest_api' != $post_type ? ucfirst( $post_type ) : 'Rest API' ) ); ?>
+				Cache Length</th>
 			<td>
 				<select name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[' . $post_type . '_cache_expires_value]' ); ?>">
 					<?php $this->build_cache_menu( $current_cache_time ); ?>
