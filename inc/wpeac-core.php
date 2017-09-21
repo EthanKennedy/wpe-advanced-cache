@@ -172,4 +172,17 @@ class WPEAC_Core {
 		//compare the global to the last_modified time passed as part of the request
 		return ( $global_last_modified > $last_modified ? $global_last_modified : $last_modified );
 	}
+
+	/**
+	 * Add cache control header to Rest API endpoint
+	 *
+	 * Adds a header to the rest API in the same way we add one to the post_types
+	 *
+	 * @since 1.1
+	 * @return header cache control header
+	 */
+	function send_header_cache_control_api() {
+		$cache_length = self::get( 'rest_api_cache_expires_value' );
+		header( "Cache-Control: max-age=$cache_length, must-revalidate" );
+	}
 }
