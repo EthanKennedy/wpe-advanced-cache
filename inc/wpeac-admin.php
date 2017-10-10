@@ -452,8 +452,6 @@ class WPEAC_Admin {
 		$post_types = get_post_types( $args, 'names' );
 		//who cares about cache times on nav_menu_items and attachments
 		$post_types = array_diff( $post_types, array( 'revision', 'nav_menu_item', 'attachment' ) );
-		//add rest_api to the list so we can add that to our menu and data blob easily.
-		$post_types[] = 'rest_api';
 		/**
 		 * Update sanitized post types array
 		 *
