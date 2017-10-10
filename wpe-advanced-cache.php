@@ -3,7 +3,7 @@
  * Plugin Name: WP Engine Advanced Cache Options
  * Plugin URI: https://github.com/EthanKennedy/wpe-advanced-cache
  * Description: This plugin works to increase cache time across the board, and gives a smarter way to purge the cache
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Ethan Kennedy, Steven Word
  * Author URI: http://ethankennedy.me
  * License: GPL2.
@@ -13,9 +13,9 @@ define( 'WPE_ADVANCED_CACHE_PATH', plugin_dir_path( __FILE__ ) );
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-admin.php';
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-core.php';
 
-if ( is_admin() ) {
+//if ( is_admin() ) {
 	new WPEAC_Admin();
-}
+//}
 
 new WPEAC_Core();
 
@@ -47,12 +47,12 @@ add_action( 'wp', 'wpe_ac_add_cache_header' );
 	 * Adds a cache header in the same way we add them for posts
 	 *
 	 * @since 1.1.0
-	 * @action rest_api_init
+	 * @see WPEAC_Core::get_namespace
 	 * @see WPEAC_CORE::send_header_cache_control_api
 	 */
 
-function wpe_ac_add_api_cache_header() {
-	WPEAC_CORE::send_header_cache_control_api();
-}
-
-add_action( 'rest_api_init', 'wpe_ac_add_api_cache_header' );
+add_filter( 'rest_post_dispatch', function( $result, $server, $request ) {
+	$route = $request->get_route();
+	WPEAC_Core::send_header_cache_control_api( $route );
+	return $result;
+}, 10, 3 );
