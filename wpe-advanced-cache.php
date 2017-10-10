@@ -13,9 +13,9 @@ define( 'WPE_ADVANCED_CACHE_PATH', plugin_dir_path( __FILE__ ) );
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-admin.php';
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-core.php';
 
-//if ( is_admin() ) {
+if ( is_admin() ) {
 	new WPEAC_Admin();
-//}
+}
 
 new WPEAC_Core();
 
