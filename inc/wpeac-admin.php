@@ -83,8 +83,8 @@ class WPEAC_Admin {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'wpengine-advanced-cache-control' );?>
 				<?php do_settings_sections( 'wpengine-advanced-cache-control' ); ?>
-				<p>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Anytime a user is served a cached copy of your page, they don't have to go through WordPress to get it, which saves the user time, and the server resources.
-					<br> <br>The cache is purged in most functions that update post content, so often times it's best to set limits as high as possible. If you're seeing issues with content taking some time to update on your posts regularly, it may be best to reduce these limits. If the changes are one-offs, the purge cache button should update the content for your visitors.</p>
+				<p>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Cached copies of pages are served from outside of WordPress, which conserves server resources and saves time for your users.
+					<br> <br>The cache is purged in most functions that update post content, so oftentimes it's best to set limits as high as possible. If you regularly update content and notice your posts take a while to update, it may be best to reduce these limits. If you are making a one-off change, the purge cache button will update the content for your visitors.</p>
 				<h3>Post Types</h3>
 				<p>Use the below options to alter the cache expiry times on the public post types on your site</p>
 				<table class="form-table">
