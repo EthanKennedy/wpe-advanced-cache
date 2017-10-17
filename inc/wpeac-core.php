@@ -181,7 +181,7 @@ class WPEAC_Core {
 	 * @since 1.1
 	 * @return header cache control header
 	 */
-	function send_header_cache_control_api() {
+	public static function send_header_cache_control_api() {
 		$cache_length = self::get( 'rest_api_cache_expires_value' );
 		header( "Cache-Control: max-age=$cache_length, must-revalidate" );
 	}
