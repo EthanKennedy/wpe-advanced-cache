@@ -83,10 +83,11 @@ class WPEAC_Admin {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'wpengine-advanced-cache-control' );?>
 				<?php do_settings_sections( 'wpengine-advanced-cache-control' ); ?>
+				<p>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Cached copies of pages are served from outside of WordPress, which conserves server resources and saves time for your users.
+					<br> <br>The cache is purged in most functions that update post content, so oftentimes it's best to set limits as high as possible. If you regularly update content and notice your posts take a while to update, it may be best to reduce these limits. If you are making a one-off change, the purge cache button will update the content for your visitors.</p>
+				<h3>Post Types</h3>
+				<p>Use the below options to alter the cache expiry times on the public post types on your site</p>
 				<table class="form-table">
-					<p>Increasing the Cache time on the site will make the site faster, while improving backend performance.
-						<br> <br>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Anytime a user is served a cached copy of your page, they don't have to go through WordPress to get it, which saves the user time, and the server resources.
-						<br> <br>The cache is purged in most functions that update post content, so often times it's best to set limits as high as possible. If you're seeing issues with content taking some time to update on your posts regularly, it may be best to reduce these limits. If the changes are one-offs, the purge cache button should update the content for your visitors.</p>
 						<?php
 						// Run through and build all the forms for each post type
 						foreach ( $options['sanitized_post_types'] as $post_type ) {
@@ -94,6 +95,18 @@ class WPEAC_Admin {
 						}
 					?>
 				</table>
+				<?php if ( function_exists( 'rest_get_server' ) ) { ?>
+				<table class="form-table">
+					<h3>Rest API Namespaces</h3>
+					<p>Use the below options to alter the cache expiry times on Rest API end-points your site</p>
+						<?php
+						// Run through and build all the forms for each post type
+						foreach ( $options['namespaces'] as $namespace ) {
+							$this->cache_menu_settings_page_options( $namespace );
+						}
+					?>
+				</table>
+			<?php } // Conditional to prevent UI displaying for Rest API ?>
 				<!-- Give an option to turn off the "Smarter Cache" -->
 				<h3>Smarter Cache</h3>
 				<table class="form-table">
@@ -185,7 +198,7 @@ class WPEAC_Admin {
 	function cache_menu_settings_page_options( $post_type ) {
 		$current_cache_time = WPEAC_Core::get( $post_type . '_cache_expires_value' ); ?>
 		<tr valign="top">
-			<th scope="row"> <?php echo esc_html( ( 'rest_api' != $post_type ? ucfirst( $post_type ) : 'Rest API' ) ); ?>
+			<th scope="row"> <?php echo esc_html( ucfirst( $post_type ) ); ?>
 				Cache Length</th>
 			<td>
 				<select name ="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[' . $post_type . '_cache_expires_value]' ); ?>">
@@ -266,6 +279,10 @@ class WPEAC_Admin {
 		foreach ( self::get_sanitized_post_types() as $post_type ) {
 			$this->init_cache_control_settings( $post_type );
 		}
+		foreach ( self::get_rest_api_namespaces() as $namespace ) {
+			$this->init_cache_control_settings( $namespace );
+		}
+		WPEAC_Core::update( 'namespaces', self::get_rest_api_namespaces() );
 		WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
 		WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
 	}
@@ -374,6 +391,16 @@ class WPEAC_Admin {
 		foreach ( $sanitized_post_types as $post_type ) {
 			$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
 		}
+		if ( function_exists( 'rest_get_server' ) ) {
+			$namespaces = $this->get_rest_api_namespaces();
+			$validations['namespaces'] = array(
+				'filter' => FILTER_SANITIZE_STRING,
+				'flags'  => FILTER_FORCE_ARRAY,
+			);
+			foreach ( $namespaces as $namespace ) {
+				$validations[ $namespace . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
+			}
+		}
 		return $validations;
 	}
 	/**
@@ -429,8 +456,6 @@ class WPEAC_Admin {
 		$post_types = get_post_types( $args, 'names' );
 		//who cares about cache times on nav_menu_items and attachments
 		$post_types = array_diff( $post_types, array( 'revision', 'nav_menu_item', 'attachment' ) );
-		//add rest_api to the list so we can add that to our menu and data blob easily.
-		$post_types[] = 'rest_api';
 		/**
 		 * Update sanitized post types array
 		 *
@@ -441,5 +466,22 @@ class WPEAC_Admin {
 		 * @param string $post_types the returned post_types for use in other functions.
 		 */
 		return apply_filters( 'wpe_ac_get_sanitized_post_types', $post_types );
+	}
+	/**
+	 * Return Registered Namespaces
+	 *
+	 * Returns the registered namespaces on the rest server
+	 *
+	 * @since 1.2.0
+	 * @uses get_rest_server, get_namespaces
+	 * @return array Array of namespaces
+	 *
+	 */
+	function get_rest_api_namespaces() {
+		if ( ! function_exists( 'rest_get_server' ) ) {
+			return;
+		}
+		$server = rest_get_server();
+		return $server->get_namespaces();
 	}
 }

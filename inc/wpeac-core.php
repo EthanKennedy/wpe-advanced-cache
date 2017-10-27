@@ -174,15 +174,34 @@ class WPEAC_Core {
 	}
 
 	/**
-	 * Add cache control header to Rest API endpoint
+	 * Return Namespace
 	 *
-	 * Adds a header to the rest API in the same way we add one to the post_types
+	 * Returns the current namespace for that rest_api request
 	 *
-	 * @since 1.1
-	 * @return header cache control header
+	 * @since 1.2.0
+	 * @param string $route full path of API request
+	 * @return string $namespace namespace of current API request
 	 */
-	public static function send_header_cache_control_api() {
-		$cache_length = self::get( 'rest_api_cache_expires_value' );
-		header( "Cache-Control: max-age=$cache_length, must-revalidate" );
+	public static function get_namespace( $route ) {
+		$namespaces = self::get( 'namespaces' );
+		foreach ( $namespaces as $namespace ) {
+			if ( false !== strpos( $route, $namespace ) ) {
+				return $namespace;
+			}
+		}
+	}
+	/**
+	 * Send Headers for Rest API requests
+	 *
+	 * Sends the headers for requests to the rest API based on the namespace/route sent
+	 *
+	 * @since 1.2.0
+	 * @param string $route full request path of current API request
+	 * @return string Header information
+	 */
+	public static function send_header_cache_control_api( $route ) {
+		$namespace = WPEAC_Core::get_namespace( $route );
+		$namespace_cache_length = self::get( $namespace . '_cache_expires_value' );
+		header( "Cache-Control: max-age=$namespace_cache_length, must-revalidate" );
 	}
 }
