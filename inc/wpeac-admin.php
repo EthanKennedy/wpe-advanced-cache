@@ -95,6 +95,7 @@ class WPEAC_Admin {
 						}
 					?>
 				</table>
+				<?php if ( function_exists( 'rest_get_server' ) ) { ?>
 				<table class="form-table">
 					<h3>Rest API Namespaces</h3>
 					<p>Use the below options to alter the cache expiry times on Rest API end-points your site</p>
@@ -105,6 +106,7 @@ class WPEAC_Admin {
 						}
 					?>
 				</table>
+			<?php } // Conditional to prevent UI displaying for Rest API ?>
 				<!-- Give an option to turn off the "Smarter Cache" -->
 				<h3>Smarter Cache</h3>
 				<table class="form-table">
@@ -373,17 +375,12 @@ class WPEAC_Admin {
 	 */
 	public function return_validations_array() {
 		$sanitized_post_types = $this->get_sanitized_post_types();
-		$namespaces = $this->get_rest_api_namespaces();
 		$validations = array(
 			'sanitized_post_types' => array(
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
 			'sanitized_builtin_post_types' => array(
-				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY,
-			),
-			'namespaces' => array(
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY,
 			),
@@ -394,8 +391,15 @@ class WPEAC_Admin {
 		foreach ( $sanitized_post_types as $post_type ) {
 			$validations[ $post_type . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
 		}
-		foreach ( $namespaces as $namespace ) {
-			$validations[ $namespace . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
+		if ( function_exists( 'rest_get_server' ) ) {
+			$namespaces = $this->get_rest_api_namespaces();
+			$validations['namespaces'] = array(
+				'filter' => FILTER_SANITIZE_STRING,
+				'flags'  => FILTER_FORCE_ARRAY,
+			);
+			foreach ( $namespaces as $namespace ) {
+				$validations[ $namespace . '_cache_expires_value' ] = FILTER_SANITIZE_STRING;
+			}
 		}
 		return $validations;
 	}
@@ -474,6 +478,9 @@ class WPEAC_Admin {
 	 *
 	 */
 	function get_rest_api_namespaces() {
+		if ( ! function_exists( 'rest_get_server' ) ) {
+			return;
+		}
 		$server = rest_get_server();
 		return $server->get_namespaces();
 	}
