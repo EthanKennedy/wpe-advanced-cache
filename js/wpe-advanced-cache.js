@@ -28,4 +28,17 @@ jQuery( document ).ready( function( $ ) {
 		}
 	});
 
+	$ ('#purge_varnish_path') .on('click',function(){
+		var purge_varnish_path_input = $ ('#purge_varnish_path_input') .val();
+		var data = {
+			'action': 'purge_varnish_path',
+			'your_path': purge_varnish_path_input
+		};
+
+		$.post(ajaxurl, data, function(response) {
+			//Spit out the output of the php function in the page so we can display the results
+			$ ('#purge_path_results_text').text(response);
+		});
+	});
+
 });
