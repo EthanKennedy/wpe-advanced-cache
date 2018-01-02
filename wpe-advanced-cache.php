@@ -12,6 +12,7 @@
 define( 'WPE_ADVANCED_CACHE_PATH', plugin_dir_path( __FILE__ ) );
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-admin.php';
 require_once WPE_ADVANCED_CACHE_PATH . 'inc/wpeac-core.php';
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 if ( is_admin() ) {
 	new WPEAC_Admin();
@@ -36,8 +37,12 @@ function wpe_ac_add_cache_header() {
 	$post_id = get_the_ID();
 	$post_type = get_post_type( $post_id );
 	$last_modified = get_the_modified_date( 'U' );
-	WPEAC_Core::send_header_cache_control_length( $last_modified, $post_id, $post_type );
-	WPEAC_Core::send_header_last_modified( $last_modified, $post_id, $post_type );
+	if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && ( is_cart() || is_checkout() ) ) {
+		return;
+	} else {
+		WPEAC_Core::send_header_cache_control_length( $last_modified, $post_id, $post_type );
+		WPEAC_Core::send_header_last_modified( $last_modified, $post_id, $post_type );
+	}
 }
 add_action( 'wp', 'wpe_ac_add_cache_header' );
 

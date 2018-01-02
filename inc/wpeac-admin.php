@@ -174,6 +174,9 @@ class WPEAC_Admin {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">Purge Single Post</th>
+						<p>
+							This option purges the post, homepage, feed and API endpoints for a single post based on post ID.
+						</p>
 						<td>
 							<input id="purge_varnish_post_id_input">
 							Accepts Post ID Number
@@ -190,6 +193,8 @@ class WPEAC_Admin {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">Purge Path</th>
+						<p>
+							This option will explicitly purge the path input from cache regardless of post or page status. The input information would be the part of the URL following your domain (Ex. "/path-to-purge/" from domain.com/path-to-purge/). This field accepts regex, but does not except multiple path options (IE, multiple paths separated by "|" or ",").
 						<td>
 							<input id="purge_varnish_path_input">
 							Accepts Path
