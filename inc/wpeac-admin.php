@@ -179,7 +179,7 @@ class WPEAC_Admin {
 						</p>
 						<td>
 							<input id="purge_varnish_post_id_input">
-							Accepts Post ID Number
+							<p class="description">Accepts Post ID</p>
 						</td>
 					</tr>
 				</table>
@@ -196,14 +196,15 @@ class WPEAC_Admin {
 						<p>
 							This option will explicitly purge the path input from cache regardless of post or page status. The input information would be the part of the URL following your domain (Ex. "/path-to-purge/" from domain.com/path-to-purge/). This field accepts regex, but does not except multiple path options (IE, multiple paths separated by "|" or ",").
 						<td>
-							<input id="purge_varnish_path_input">
-							Accepts Path
+							<input id="purge_varnish_path_input" class="regular-text">
+								<button class="button-primary" id="purge_varnish_url_verify">Verify URL</button>
+							<p id="purge_varnish_url_description" class="description">Accepts Path</p>
 						</td>
 					</tr>
 				</table>
 				<div id="purge_path_results_text"><br></div>
 				<br>
-				<button class="button-primary" id="purge_varnish_path" style="float:left">Purge Post</button>
+				<button class="button-primary" id="purge_varnish_path" style="float:left" disabled>Purge Path</button>
 		</div><!-- .wrap -->
 		<?php }
 	}
@@ -536,10 +537,16 @@ class WPEAC_Admin {
 	var $path_to_purge;
 
 	function purge_cache_by_path( $path ) {
-		$this->path_to_purge = $path;
-		add_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
-		WpeCommon::purge_varnish_cache( 1 );
-		remove_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
+		$this->path_to_purge = $url;
+		$url = parse_url( $path, PHP_URL_PATH );
+		if ( has_filter( 'wpe_purge_varnish_cache_paths' ) ) {
+			add_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
+			WpeCommon::purge_varnish_cache( 1 );
+			remove_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
+			echo "Purged $url from cache.";
+		} else {
+			echo 'This function only works on WP Engine installations.';
+		}
 	}
 
 	function set_path() {

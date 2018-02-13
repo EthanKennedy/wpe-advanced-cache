@@ -132,7 +132,7 @@ class WPEAC_Core {
 			// This comes out in an array, so lets break it down to just the single comment object
 			$comment_info_object = array_shift( $comment_info );
 			//Adding logic to combat issue reported in https://wordpress.org/support/topic/wpeac-core-php-error/#post-9815863
-			if ( ! is_object( $comment_info_object ) ) {
+			if ( ! is_object( $comment_info_object ) || ! isset( $comment_info_object->comment_date_gmt ) || empty( $comment_info_object->comment_date_gmt ) ) {
 				return;
 			} else {
 				$most_recent_comment_timestamp = strtotime( $comment_info_object->comment_date_gmt );
