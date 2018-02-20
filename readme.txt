@@ -30,6 +30,8 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 
 == Changelog ==
 
+1.2.1 - Updated Tested-Up-To Version
+
 1.2.0 - Added cache options for Rest API Endpoints based on routes
 				Refactored menu some
 
