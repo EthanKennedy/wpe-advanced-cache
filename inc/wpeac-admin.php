@@ -194,7 +194,7 @@ class WPEAC_Admin {
 					<tr valign="top">
 						<th scope="row">Purge Path</th>
 						<p>
-							Use the URL as it appears in browser to purge content that does not have an associated post ID. 
+							Use the URL as it appears in browser to purge content that does not have an associated post ID.
 						<td>
 							<input id="purge_varnish_path_input" class="regular-text">
 								<button class="button-primary" id="purge_varnish_url_verify">Verify URL</button>
@@ -537,20 +537,20 @@ class WPEAC_Admin {
 	var $path_to_purge;
 
 	function purge_cache_by_path( $path ) {
-		$this->path_to_purge = $url;
 		$url = parse_url( $path, PHP_URL_PATH );
-		if ( has_filter( 'wpe_purge_varnish_cache_paths' ) ) {
+		$this->path_to_purge = $url;
+		if ( isset( $_SERVER['IS_WPE'] ) ) {
 			add_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
 			WpeCommon::purge_varnish_cache( 1 );
 			remove_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
-			echo "Purged $url from cache.";
+			echo ( "Purged $url from cache." );
 		} else {
 			echo 'This function only works on WP Engine installations.';
 		}
 	}
 
 	function set_path() {
-		$paths = array( $this->path_to_purge );
-		return $paths;
+		$url = array( $this->path_to_purge );
+		return $url;
 	}
 }
