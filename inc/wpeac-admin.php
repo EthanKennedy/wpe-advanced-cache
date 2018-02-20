@@ -27,6 +27,7 @@ class WPEAC_Admin {
 		// Ajax callbacks
 		add_action( 'wp_ajax_purge_varnish_post_id', array( $this, 'purge_varnish_post_id_callback' ) );
 		add_action( 'wp_ajax_reset_global_last_modified', array( $this, 'reset_global_last_modified_callback' ) );
+		add_action( 'wp_ajax_purge_varnish_path', array( $this, 'purge_varnish_path_callback' ) );
 		// Register/confirm plugin options on admin load
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		// Update the global last modified if the theme is changed, since that will probably change how the site looks
@@ -173,15 +174,37 @@ class WPEAC_Admin {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">Purge Single Post</th>
+						<p>
+							This option purges the post, homepage, feed and API endpoints for a single post based on post ID.
+						</p>
 						<td>
 							<input id="purge_varnish_post_id_input">
-							Accepts Post ID Number
+							<p class="description">Accepts Post ID</p>
 						</td>
 					</tr>
 				</table>
 				<div id="purge_results_text"><br></div>
 				<br>
 				<button class="button-primary" id="purge_varnish_post_id" style="float:left">Purge Post</button>
+				<br>
+				<br>
+				<br>
+				<hr>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">Purge Path</th>
+						<p>
+							Use the URL as it appears in browser to purge content that does not have an associated post ID.
+						<td>
+							<input id="purge_varnish_path_input" class="regular-text">
+								<button class="button-primary" id="purge_varnish_url_verify">Verify URL</button>
+							<p id="purge_varnish_url_description" class="description">Accepts Path</p>
+						</td>
+					</tr>
+				</table>
+				<div id="purge_path_results_text"><br></div>
+				<br>
+				<button class="button-primary" id="purge_varnish_path" style="float:left" disabled>Purge Path</button>
 		</div><!-- .wrap -->
 		<?php }
 	}
@@ -261,6 +284,20 @@ class WPEAC_Admin {
 		echo WPEAC_Core::get( 'wpe_ac_global_last_modified' );
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
+	/**
+	 * Execute cache purged passed by JS
+	 *
+	 * Executes the php function that goes in and purges the cache.
+	 *
+	 * @since 1.3.0
+	 * @action wp_ajax_purge_varnish_path
+	 * @see purge_cache_by_path
+	 * @return null
+	 */
+	function purge_varnish_path_callback() {
+		$this->purge_cache_by_path( $_POST['your_path'] );
+		wp_die(); // this is required to terminate immediately and return a proper response
+	}
 	//__________________________________________________________________________________________________________________
 	/**
 	 * Register Plugin Options
@@ -279,10 +316,12 @@ class WPEAC_Admin {
 		foreach ( self::get_sanitized_post_types() as $post_type ) {
 			$this->init_cache_control_settings( $post_type );
 		}
-		foreach ( self::get_rest_api_namespaces() as $namespace ) {
-			$this->init_cache_control_settings( $namespace );
+		if ( function_exists( 'rest_get_server' ) ) {
+			foreach ( self::get_rest_api_namespaces() as $namespace ) {
+				$this->init_cache_control_settings( $namespace );
+			}
+			WPEAC_Core::update( 'namespaces', self::get_rest_api_namespaces() );
 		}
-		WPEAC_Core::update( 'namespaces', self::get_rest_api_namespaces() );
 		WPEAC_Core::update( 'sanitized_post_types', self::get_sanitized_post_types() );
 		WPEAC_Core::update( 'sanitized_builtin_post_types', self::get_sanitized_post_types( true ) );
 	}
@@ -483,5 +522,35 @@ class WPEAC_Admin {
 		}
 		$server = rest_get_server();
 		return $server->get_namespaces();
+	}
+	/**
+	 * Purge Varnish By Path
+	 *
+	 * purges varnish on WP Engine installations by path instead of just post ID
+	 *
+	 * @since 1.3.0
+	 * @see WpeCommon::purge_varnish_cache
+	 * @param string $path the path to be purged based on user input
+	 * @return string $purge_path_response purge response based on input
+	 *
+	 */
+	var $path_to_purge;
+
+	function purge_cache_by_path( $path ) {
+		$url = parse_url( $path, PHP_URL_PATH );
+		$this->path_to_purge = $url;
+		if ( isset( $_SERVER['IS_WPE'] ) ) {
+			add_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
+			WpeCommon::purge_varnish_cache( 1 );
+			remove_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
+			echo ( "Purged $url from cache." );
+		} else {
+			echo 'This function only works on WP Engine installations.';
+		}
+	}
+
+	function set_path() {
+		$url = array( $this->path_to_purge );
+		return $url;
 	}
 }

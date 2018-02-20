@@ -118,16 +118,26 @@ class WPEAC_Core {
 	 * @return string Timestamp of most recent comment.
 	 */
 	function most_recent_comment_timestamp( $post_id ) {
-		// Arguments used in lookup of comment, to make sure we get what we need
-		$args = array(
-			'orderby' => 'comment_date_gmt',
-			'number'  => 1,
-			'post_id' => $post_id,
-		);
-		$comment_info = get_comments( $args );
-		// This comes out in an array, so lets break it down to just the single comment object
-		$comment_info_object = array_shift( $comment_info );
-		$most_recent_comment_timestamp = strtotime( $comment_info_object->comment_date_gmt );
+		//confirm commments are actually enabled on this post, so we don't get warnings
+		if ( ! comments_open( $post_id ) ) {
+			return;
+		} else {
+			// Arguments used in lookup of comment, to make sure we get what we need
+			$args = array(
+				'orderby' => 'comment_date_gmt',
+				'number'  => 1,
+				'post_id' => $post_id,
+			);
+			$comment_info = get_comments( $args );
+			// This comes out in an array, so lets break it down to just the single comment object
+			$comment_info_object = array_shift( $comment_info );
+			//Adding logic to combat issue reported in https://wordpress.org/support/topic/wpeac-core-php-error/#post-9815863
+			if ( ! is_object( $comment_info_object ) || ! isset( $comment_info_object->comment_date_gmt ) || empty( $comment_info_object->comment_date_gmt ) ) {
+				return;
+			} else {
+				$most_recent_comment_timestamp = strtotime( $comment_info_object->comment_date_gmt );
+			}
+		}
 		/**
 		 * Update comment last modified variable.
 		 *
