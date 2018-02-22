@@ -56,9 +56,6 @@ class WPEAC_Core {
 	 * @return last modified headers
 	 */
 	public static function send_header_last_modified( $last_modified, $post_id, $post_type ) {
-		if ( is_user_logged_in() ) {
-			return;
-		}
 		$last_modified_toggle = self::get( 'last_modified_enabled' );
 		//serve last modified headers if they're turned on, or if it's set to only builtins and we're on a builtin
 		if ( '1' == $last_modified_toggle && in_array( $post_type , self::get( 'sanitized_post_types' ) ) ||
