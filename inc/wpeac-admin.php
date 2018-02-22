@@ -170,7 +170,7 @@ class WPEAC_Admin {
 			<hr>
 			<!-- Add a button to purge specific posts from cache -->
 			<!-- only add the button on a WP ENGINE site -->
-			<?php if ( ! isset( $_SERVER['IS_WPE'] ) ) { ?>
+			<?php if ( isset( $_SERVER['IS_WPE'] ) ) { ?>
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">Purge Single Post</th>
