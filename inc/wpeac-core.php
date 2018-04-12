@@ -209,6 +209,7 @@ class WPEAC_Core {
 	public static function send_header_cache_control_api( $route ) {
 		$namespace = WPEAC_Core::get_namespace( $route );
 		$namespace_cache_length = self::get( $namespace . '_cache_expires_value' );
+		$namespace_cache_length = apply_filters( 'wpe_ac_namespace_cache_length', $namespace_cache_length, $namespace );
 		header( "Cache-Control: max-age=$namespace_cache_length, must-revalidate" );
 	}
 }
