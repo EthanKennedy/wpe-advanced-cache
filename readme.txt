@@ -31,6 +31,7 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 == Changelog ==
 
 1.3.1 - Fixed bug with browser caching while user's were logged in
+		Added a filter for the Rest API cache headers
 
 1.3.0 - Added functionality to purge based on URL
 			- Bug fixes for WooCommerce
