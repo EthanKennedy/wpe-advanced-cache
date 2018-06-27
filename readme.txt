@@ -4,7 +4,7 @@ Contributors: ethankennedy, stevenkword
 Tags: wpengine, cache, headers, last-modified
 Requires at least: 3.5
 Tested up to: 4.9
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 This plugin is a tool that leverages some specific WP Engine tools, as well as general web options for increasing the cacheability of a WordPress site.
 
@@ -29,6 +29,8 @@ This plugin is a tool that leverages some specific WP Engine tools, as well as g
 4. Configure the cache options for your public post types, and manage other caching related global options.
 
 == Changelog ==
+
+1.3.2 - Fixed XSS/CSRF Vulnerability
 
 1.3.1 - Fixed bug with browser caching while user's were logged in
 		Added a filter for the Rest API cache headers

@@ -473,6 +473,7 @@ class WPEAC_Admin {
 		} else {
 			$purge_response = "$post_id is not a valid public post ID";
 		}
+		header( 'content-type: text/plain' );
 		echo $purge_response;
 	}
 	/**
@@ -543,10 +544,12 @@ class WPEAC_Admin {
 			add_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
 			WpeCommon::purge_varnish_cache( 1 );
 			remove_filter( 'wpe_purge_varnish_cache_paths', array( $this, 'set_path' ) );
-			echo ( "Purged $url from cache." );
+			$purge_path_response = "Purged $url from cache.";
 		} else {
-			echo 'This function only works on WP Engine installations.';
+			$purge_path_response = 'This function only works on WP Engine installations.';
 		}
+		header( 'content-type: text/plain' );
+		echo $purge_path_response;
 	}
 
 	function set_path() {
