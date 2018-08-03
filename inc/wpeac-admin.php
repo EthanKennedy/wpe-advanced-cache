@@ -283,7 +283,7 @@ class WPEAC_Admin {
 	 */
 	function reset_global_last_modified_callback() {
 		$this->update_global_last_modified();
-		echo WPEAC_Core::get( 'wpe_ac_global_last_modified' );
+		echo esc_html( WPEAC_Core::get( 'wpe_ac_global_last_modified' ) );
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 	/**
@@ -477,7 +477,7 @@ class WPEAC_Admin {
 			$purge_response = "$post_id is not a valid public post ID";
 		}
 		header( 'content-type: text/plain' );
-		echo $purge_response;
+		echo esc_html( $purge_response );
 	}
 	/**
 	 * Returns post_types to manage
@@ -552,7 +552,7 @@ class WPEAC_Admin {
 			$purge_path_response = 'This function only works on WP Engine installations.';
 		}
 		header( 'content-type: text/plain' );
-		echo $purge_path_response;
+		echo esc_html( $purge_path_response );
 	}
 
 	function set_path() {
