@@ -4,7 +4,8 @@ jQuery( document ).ready( function( $ ) {
 		var purge_varnish_post_id_input = $('#purge_varnish_post_id_input').val();
 		var data = {
 			'action': 'purge_varnish_post_id',
-			'your_post_id': purge_varnish_post_id_input
+			'your_post_id': purge_varnish_post_id_input,
+			'wpeac-settings-nonce' : $('#wpeac-settings-nonce').val()
 		};
 
 		$.post(ajaxurl, data, function(response) {
@@ -48,10 +49,6 @@ jQuery( document ).ready( function( $ ) {
 					$('#purge_varnish_url_description').text('URL Redirects, Please Use Live URL');
 					$('#purge_varnish_path').attr('disabled','disabled');
 				},
-				301: function() {
-					$('#purge_varnish_url_description').text('URL Redirects, Please Use Live URL');
-					$('#purge_varnish_path').attr('disabled','disabled');
-				},
 				200: function() {
 					$('#purge_varnish_url_description').text('URL Valid');
 					$('#purge_varnish_path').removeAttr('disabled');
@@ -63,7 +60,8 @@ jQuery( document ).ready( function( $ ) {
 		var purge_varnish_path_input = $('#purge_varnish_path_input').val();
 		var data = {
 			'action': 'purge_varnish_path',
-			'your_path': purge_varnish_path_input
+			'your_path': purge_varnish_path_input,
+			'wpeac-settings-nonce' : $('#wpeac-settings-nonce').val()
 		};
 
 		$.post(ajaxurl, data, function(response) {

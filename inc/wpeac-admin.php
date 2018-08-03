@@ -82,6 +82,7 @@ class WPEAC_Admin {
 		<div class="wrap">
 			<h2>Cache Options</h2>
 			<form method="post" action="options.php">
+			<?php wp_nonce_field( 'wpeac-settings', 'wpeac-settings-nonce' ); ?>
 				<?php settings_fields( 'wpengine-advanced-cache-control' );?>
 				<?php do_settings_sections( 'wpengine-advanced-cache-control' ); ?>
 				<p>Increasing the cache times on the server will allow more users to see Cached copies of your pages. Cached copies of pages are served from outside of WordPress, which conserves server resources and saves time for your users.
@@ -266,6 +267,7 @@ class WPEAC_Admin {
 	 * @return null
 	 */
 	function purge_varnish_post_id_callback() {
+		check_admin_referer( 'wpeac-settings', 'wpeac-settings-nonce' );
 		$this->purge_cache_by_post_id( $_POST['your_post_id'] );
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
@@ -295,6 +297,7 @@ class WPEAC_Admin {
 	 * @return null
 	 */
 	function purge_varnish_path_callback() {
+		check_admin_referer( 'wpeac-settings', 'wpeac-settings-nonce' );
 		$this->purge_cache_by_path( $_POST['your_path'] );
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
