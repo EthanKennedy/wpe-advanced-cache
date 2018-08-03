@@ -476,7 +476,6 @@ class WPEAC_Admin {
 		} else {
 			$purge_response = "$post_id is not a valid public post ID";
 		}
-		header( 'content-type: text/plain' );
 		echo esc_html( $purge_response );
 	}
 	/**
@@ -551,7 +550,6 @@ class WPEAC_Admin {
 		} else {
 			$purge_path_response = 'This function only works on WP Engine installations.';
 		}
-		header( 'content-type: text/plain' );
 		echo esc_html( $purge_path_response );
 	}
 
