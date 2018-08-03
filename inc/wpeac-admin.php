@@ -149,7 +149,7 @@ class WPEAC_Admin {
 					</tr>
 				</table>
 				<?php submit_button(); ?>
-				<input type="hidden" id="wpe_ac_global_last_modified" name="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[wpe_ac_global_last_modified]' ); ?>" value="<?php echo WPEAC_Core::get( 'wpe_ac_global_last_modified' )?>"/>
+				<input type="hidden" id="wpe_ac_global_last_modified" name="<?php echo esc_attr( WPEAC_Core::CONFIG_OPTION . '[wpe_ac_global_last_modified]' ); ?>" value="<?php echo esc_attr( WPEAC_Core::get( 'wpe_ac_global_last_modified' ) )?>"/>
 			</form>
 			<hr>
 			<table class="form-table">
