@@ -102,7 +102,9 @@ class WPEAC_Core {
 			$cache_length = self::get( $post_type . '_cache_expires_value' );
 		}
 		//@TODO if we update how our cache works, change this header to respect the tight varnish options
-		header( "Cache-Control: max-age=$cache_length, must-revalidate" );
+		if ( ! headers_sent() ) {
+			header( "Cache-Control: max-age=$cache_length, must-revalidate" );
+		}
 	}
 	/**
 	 * Get Most recent comment timestamp
@@ -210,6 +212,8 @@ class WPEAC_Core {
 		$namespace = WPEAC_Core::get_namespace( $route );
 		$namespace_cache_length = self::get( $namespace . '_cache_expires_value' );
 		$namespace_cache_length = apply_filters( 'wpe_ac_namespace_cache_length', $namespace_cache_length, $namespace, $route );
-		header( "Cache-Control: max-age=$namespace_cache_length, must-revalidate" );
+		if ( ! headers_sent() ) {
+			header( "Cache-Control: max-age=$namespace_cache_length, must-revalidate" );
+		}
 	}
 }
