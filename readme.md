@@ -1,3 +1,5 @@
+# This plugin is no longer supported, WP Engine has implemented the functionality into the MU Plugin on their platform. Reference https://wordpress.org/support/topic/new-wpe-mu-plugin-with-caching-tab/ for information about converting to the new setup. 
+
 # WP Engine Advanced Cache
 
 Contributors: ethankennedy, stevenkword\
